@@ -11,9 +11,9 @@ Nova versão do SaaS multi-tenant baseada no escopo do repositório original.
 - Validação de variáveis obrigatórias e flags OAuth durante a inicialização.
 - Health check de prontidão em `/api/health`, com verificação do banco e `x-request-id` para correlação.
 - Contrato OpenAPI inicial em `/openapi.yaml`.
-- CI configurada para formatação, typecheck, testes, geração do Prisma Client e build.
+- CI configurada com PostgreSQL para migrações, formatação, typecheck, testes, geração do Prisma Client e build.
 - Sessão verificada no servidor na rota `/dashboard`.
-- A migração inicial do banco ainda precisa ser aplicada a uma instância PostgreSQL.
+- A migração inicial está versionada e aplicada automaticamente no PostgreSQL temporário do CI; o banco local requer PostgreSQL/Docker.
 - Organização, membros, projetos e recuperação de senha seguem como etapas seguintes.
 
 ## Requisitos
@@ -33,11 +33,13 @@ Nova versão do SaaS multi-tenant baseada no escopo do repositório original.
 
 ### Ambientes e validação
 
-`src/instrumentation.ts` valida `DATABASE_URL`, `BETTER_AUTH_URL`, `BETTER_AUTH_SECRET` e flags dos provedores sociais ao iniciar a aplicação. Em desenvolvimento, staging e produção, configure esses valores no gerenciador de secrets do respectivo ambiente; não reutilize credenciais entre ambientes. O CI usa valores isolados de teste e não precisa de uma instância PostgreSQL para typecheck e build.
+`src/instrumentation.ts` valida `DATABASE_URL`, `BETTER_AUTH_URL`, `BETTER_AUTH_SECRET` e flags dos provedores sociais ao iniciar a aplicação. Em desenvolvimento, staging e produção, configure esses valores no gerenciador de secrets do respectivo ambiente; não reutilize credenciais entre ambientes. O CI sobe um PostgreSQL temporário, aplica as migrações e depois executa as verificações.
 
 Use `pnpm db:migrate` para criar e aplicar migrações em desenvolvimento e `pnpm db:deploy` para aplicar migrações já versionadas em staging/produção. O health check `/api/health` retorna 200 quando o banco está acessível e 503 quando está indisponível.
 
 O seed de dados de negócio fica para a fase de organizações e projetos: neste estágio o schema contém apenas identidade/autenticação, e não há dados de domínio úteis para popular. Contas locais devem ser criadas pelo fluxo de cadastro, sem credenciais demo embutidas.
+
+Consulte [docs/environments.md](docs/environments.md) para o checklist de configuração de desenvolvimento, staging e produção. Staging e produção ainda precisam ser provisionados no provedor de deploy escolhido.
 
 ### Login social (opcional)
 
