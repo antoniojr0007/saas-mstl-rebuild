@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+.env
+.env.*
+!.env.example
+.pnpm-store
+.prisma-cache
+coverage
+src/generated/prisma
+
+tsconfig.tsbuildinfo

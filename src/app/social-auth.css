@@ -1,0 +1,43 @@
+.social-auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.social-auth-button {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.social-auth-button:hover:not(:disabled) {
+  background: var(--wash);
+  border-color: #bdcec2;
+}
+.social-auth-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+  color: #98a39b;
+  font-size: 10px;
+}
+.auth-divider:before,
+.auth-divider:after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--line);
+}
