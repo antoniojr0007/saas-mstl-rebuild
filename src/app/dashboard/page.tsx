@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { SignOutButton } from "@/components/sign-out-button";
 import { auth } from "@/lib/auth";
+import Link from "next/link";
 
 export default async function DashboardPage() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -19,7 +20,12 @@ export default async function DashboardPage() {
             mstl<span className="brand-dot">.</span>
           </span>
         </a>
-        <SignOutButton />
+        <nav className="dashboard-nav" aria-label="Navegação da conta">
+          <Link className="top-link" href="/dashboard/profile">
+            Meu perfil
+          </Link>
+          <SignOutButton />
+        </nav>
       </header>
       <section className="dashboard-welcome">
         <div className="eyebrow">
